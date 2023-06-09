@@ -1,15 +1,15 @@
-import telebot
+from flask import Flask, request
+import telegram
 import config
-import requests
+#import requests
 from random import choice
 from pathlib import Path
 import re
-from telebot import types 
 
 bot_token = config.bot_token
-bot = telebot.TeleBot(bot_token)
+bot = telegram.Bot(bot_token)
 
-# working with data file consisted of names (add some better analysis features of user inputs)
+# working with data file consist of names (add some better analysis features of user inputs)
 
 def getNextAvailableIndex(availableIndices, indicesSoFar):
     availableIndices.remove(indicesSoFar[-1])
@@ -44,7 +44,7 @@ def start(message):
     markup_inline.row(btn1, btn2)
     bot.reply_to(message, "Bot is avaliable.", reply_markup=markup_inline)
 def go(message):
-    start(message)
+    start()
 
 # interface buttons callback
 
@@ -58,7 +58,7 @@ def go_to(callback):
 # content treatment
 
 @bot.message_handler(content_types=['text']) 
-def handle_text(message):
+def handle_move(message):
     loadNamesFromFile()
     global lastSelectedIndex
     if message in names:
