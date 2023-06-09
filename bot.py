@@ -72,11 +72,6 @@ def move(chat_id, message):
 @bot.message_handler(content_types=['photo', 'video', 'audio'])  # Ограничение по типу информации на входе
 def handle_all(message):
     bot.reply_to(message, "Нет, бот не принимает фотографии философов и записи их лекций в формате игры. Распознавать такие входные данные — ваша задача, господин-интеллектуал.")
-
-bot.polling(none_stop=True) # Для нон-стоп работы
-        
+      
 if __name__ == '__main__':
-    chat_id = int(input(f'{message.from_user.username}:')
-    message = input("Используйте интерактив!")
-else:
-    loadNamesFromFile()
+    bot.polling(none_stop=True) # Для нон-стоп работы
