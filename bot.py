@@ -51,6 +51,7 @@ def go_to(callback):
 
 @bot.message_handler(content_types=['text'])  # Ограничение по типу информации на входе
 def move(chat_id, message):
+    loadNamesFromFile()
     global lastSelectedIndex
     if message in names:
         if lastSelectedIndex >= 0:
@@ -62,12 +63,12 @@ def move(chat_id, message):
         elif: message == '/move':
             bot.send_message(message.chat.id, text=f'Человек, ознакомься с правилами игры.')   
         else:
-            firstSelection = choice(words)
+            firstSelection = choice(names)
             this_move = firstSelection + "\n"
             bot.send_message(callback.from_user.id, text=this_move)
         lastSelectedIndex = len(words)-1
     else:
-        print("О ком вы вообще говорите?")
+        bot.send_message(message.chat.id, "О ком вы вообще говорите?")
 
 @bot.message_handler(content_types=['photo', 'video', 'audio'])  # Ограничение по типу информации на входе
 def handle_all(message):
@@ -75,3 +76,4 @@ def handle_all(message):
       
 if __name__ == '__main__':
     bot.polling(none_stop=True) # Для нон-стоп работы
+    #loadNamesFromFile()
