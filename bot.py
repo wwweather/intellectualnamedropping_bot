@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 from telebot import types 
 
-bot_token = "<EXISTING_BOT_TOKEN>"
+bot_token = config.bot_token
 bot = telebot.TeleBot(bot_token)
 
 def getNextAvailableIndex(availableIndices, indicesSoFar):
@@ -32,15 +32,22 @@ def loadNamesFromFile():
 def start(message):
     bot.send_message(message.chat.id, text=f'Привет, {message.from_user.username}, поиграем?')
     markup_inline = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton("Правила игры", url='https://github.com/wwweather/intellectualnamedropping_bot/blob/main/README.md')
+    btn1 = types.InlineKeyboardButton("Правила игры", callback_data='help')
     btn2 = types.InlineKeyboardButton("Начать играть", callback_data='start_the_game')
     markup_inline.row(btn1, btn2)
     bot.reply_to(message, "Bot is avaliable.", reply_markup=markup_inline)
+    
+def help(message):
+    with open('https://github.com/wwweather/intellectualnamedropping_bot/blob/main/README.md', 'r') as rm:
+    rules = rm.read()
+    bot.send_message(callback.from_user.id, text=rules)
 
 @bot.callback_query_handler(func=lambda callback: True)
 def go_to(callback):
     if callback.data == "start_the_game":
         bot.send_message(callback.from_user.id, text='Первый ход за тобой!')
+    elif callback.data == "help":
+        help()
 
 @bot.message_handler(content_types=['text'])  # Ограничение по типу информации на входе
 def move(chat_id, message):
@@ -70,6 +77,6 @@ bot.polling(none_stop=True) # Для нон-стоп работы
         
 if __name__ == '__main__':
     chat_id = int(input(f'{message.from_user.username}:')
-    message = input("Используйте интерактив:")
+    message = input("Используйте интерактив!")
 else:
     loadNamesFromFile()
